@@ -2,19 +2,23 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Sheet App Pro Secure</title>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+<!-- Bengali Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 
-/* ?? ANTI COPY GLOBAL */
+/* 🔒 GLOBAL */
 body{
 margin:0;
 padding:0;
-font-family:sans-serif;
+font-family:"Noto Sans Bengali","SolaimanLipi","Hind Siliguri",Arial,sans-serif;
 background:#002031;
 height:100vh;
 overflow:hidden;
@@ -32,7 +36,7 @@ height:100vh;
 position:relative;
 }
 
-/* ?? WATERMARK */
+/* WATERMARK */
 .app::before{
 content:"PROTECTED CONTENT";
 position:absolute;
@@ -40,23 +44,39 @@ top:50%;
 left:50%;
 transform:translate(-50%, -50%) rotate(-25deg);
 font-size:30px;
-color:rgba(0,0,0,0.06);
+color:rgba(255,255,255,0.05);
 white-space:nowrap;
 pointer-events:none;
 z-index:0;
 }
 
-/* TOP */
+/* HEADING */
+.page-heading{
+color:#ffffff;
+font-size:22px;
+font-weight:bold;
+text-align:center;
+padding:15px 10px 5px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+position:relative;
+z-index:2;
+}
+
+/* TOPBAR */
 .topbar{
 display:flex;
-gap:8px;
+gap:15px;
 padding:12px;
 align-items:center;
 z-index:2;
 }
 
+/* SEARCH */
 .search-box{
-flex:1;
+flex:3;
 position:relative;
 }
 
@@ -71,6 +91,7 @@ background:#fff;
 font-size:15px;
 }
 
+/* CLEAR ICON */
 .clear-icon{
 position:absolute;
 right:12px;
@@ -88,7 +109,7 @@ display:block;
 
 /* TOTAL */
 .total-box{
-height:30px;
+height:45px;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -97,7 +118,7 @@ border-radius:10px;
 background:#00bcd4;
 color:#fff;
 font-weight:bold;
-white-space:nowrap;
+min-width:45px;
 }
 
 /* LIST */
@@ -112,51 +133,61 @@ position:relative;
 z-index:2;
 }
 
+/* CARD */
 .card{
-background:#00bcd4;
+background:#0f6e66;
 padding:14px;
 border-radius:14px;
 box-shadow:0 2px 8px rgba(0,0,0,0.08);
 }
 
+/* TITLE */
 .item-title{
 font-size:18px;
 font-weight:bold;
 margin-bottom:8px;
+color:#ffffff;
 }
 
+/* PRICE */
 .price-badge{
 display:inline-block;
 background:#00bcd4;
 color:#002030;
+padding:5px 10px;
+border-radius:8px;
 font-weight:bold;
 margin-bottom:8px;
-font-size:14px;
+font-size:15px;
 }
 
+/* READ MORE */
 .read-more{
 margin-top:10px;
 color:#ff0000;
 font-weight:bold;
 cursor:pointer;
-user-select:none;
 }
 
+/* DETAILS */
 .expand-details{
 display:none;
 margin-top:12px;
-font-size:14px;
+font-size:17px;
 line-height:1.8;
 background:#f7f7f7;
 padding:12px;
 border-radius:10px;
 word-break:break-word;
+color:#222;
 }
 
+/* LOADING */
 .loading{
 text-align:center;
 padding:30px;
-color:#666;
+color:#ffffff;
+font-size:18px;
 }
 
 </style>
@@ -165,6 +196,12 @@ color:#666;
 <body>
 
 <div class="app">
+
+<!-- HEADING -->
+<div class="page-heading">
+<span class="material-icons">menu_book</span>
+General and Subsidiary Rules
+</div>
 
 <!-- TOP -->
 <div class="topbar">
@@ -227,18 +264,15 @@ if(!text) return "";
 text = String(text);
 const temp = document.createElement("textarea");
 temp.innerHTML = text;
-text = temp.value;
-return text.replace(/\n/g,"<br>");
+return temp.value.replace(/\n/g,"<br>");
 }
 
 /* LOAD */
 async function loadData(){
 
-listContainer.innerHTML =
-`<div class="loading">Loading...</div>`;
+listContainer.innerHTML = `<div class="loading">Loading...</div>`;
 
 try{
-
 const res = await fetch(getApiUrl());
 const data = await res.json();
 
@@ -248,12 +282,8 @@ filteredData = data;
 render();
 
 }catch(e){
-
 console.log(e);
-
-listContainer.innerHTML =
-`<div class="loading">Failed to load</div>`;
-
+listContainer.innerHTML = `<div class="loading">Failed to load</div>`;
 }
 
 }
@@ -266,8 +296,7 @@ listContainer.innerHTML = "";
 totalBox.innerText = filteredData.length;
 
 if(filteredData.length === 0){
-listContainer.innerHTML =
-`<div class="loading">No Data Found</div>`;
+listContainer.innerHTML = `<div class="loading">No Data Found</div>`;
 return;
 }
 
@@ -278,6 +307,7 @@ card.className = "card";
 
 card.innerHTML = `
 <div class="item-title">${item.item || ""}</div>
+
 <div class="price-badge">${item.price || ""}</div>
 
 <div class="read-more" onclick="toggle(this, ${index})">
@@ -295,7 +325,7 @@ listContainer.appendChild(card);
 
 }
 
-/* TOGGLE FIXED */
+/* TOGGLE */
 function toggle(btn, i){
 
 const el = document.getElementById("d-" + i);
@@ -339,6 +369,7 @@ filteredData = allData;
 render();
 }
 
+/* START */
 loadData();
 
 </script>
